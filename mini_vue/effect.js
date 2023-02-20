@@ -2,7 +2,7 @@
  * @Author: 大蒙
  * @Date: 2023-02-20 08:14:06
  * @LastEditors: 大蒙
- * @LastEditTime: 2023-02-20 08:53:42
+ * @LastEditTime: 2023-02-20 09:17:08
  * @FilePath: /study/mini_vue/effect.js
  * @Description: 
  * 
@@ -39,7 +39,7 @@ const track = (target, key) => {
 }
 
 const trigger = (target, key) => {
-    console.log('trigger', target == data, bucket, bucket.get());
+    console.log('trigger', target == data);
     let depsMap = bucket.get(target) // 获取依赖
     if (!depsMap) return
     let effects = depsMap.get(key)

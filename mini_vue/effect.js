@@ -1,10 +1,19 @@
+/*
+ * @Author: 大蒙
+ * @Date: 2023-02-20 08:14:06
+ * @LastEditors: 大蒙
+ * @LastEditTime: 2023-02-20 08:53:42
+ * @FilePath: /study/mini_vue/effect.js
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by 启益医疗, All Rights Reserved. 
+ */
 const bucket = new WeakMap()
 const data = { ok: true, text: 'this is a demo' }
 let activeEffect = null
 const obj = new Proxy(data, {
     get(target, key) {
         track(target, key)
-
         return target[key]
     },
     set(target, key, value) {
@@ -14,6 +23,7 @@ const obj = new Proxy(data, {
 })
 
 const track = (target, key) => {
+    console.log('track', target == data);
     if (!activeEffect) return
     let depsMap = bucket.get(target)
     if (!depsMap) {
@@ -29,8 +39,8 @@ const track = (target, key) => {
 }
 
 const trigger = (target, key) => {
-    let depsMap = bucket.get[target]
-    console.log(depsMap);
+    console.log('trigger', target == data, bucket, bucket.get());
+    let depsMap = bucket.get(target) // 获取依赖
     if (!depsMap) return
     let effects = depsMap.get(key)
     effects && effects.forEach(fn => fn())
@@ -48,6 +58,6 @@ effect(function () {
 
 
 setTimeout(() => {
-    console.log('get', bucket.get(target));
     obj.ok = false
+    console.log(data, obj);
 }, 5000)

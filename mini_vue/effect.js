@@ -1,13 +1,3 @@
-/*
- * @Author: 大蒙
- * @Date: 2023-02-20 08:14:06
- * @LastEditors: 大蒙
- * @LastEditTime: 2023-02-20 09:17:08
- * @FilePath: /study/mini_vue/effect.js
- * @Description: 
- * 
- * Copyright (c) 2023 by 启益医疗, All Rights Reserved. 
- */
 const bucket = new WeakMap()
 const data = { ok: true, text: 'this is a demo' }
 let activeEffect = null
@@ -61,3 +51,8 @@ setTimeout(() => {
     obj.ok = false
     console.log(data, obj);
 }, 5000)
+
+
+
+
+

@@ -25,18 +25,36 @@ const track = (target, key) => {
         depsMap.set(key, deps)
     }
     deps.add(activeEffect)
+    activeEffect.deps.push(deps)
 }
 
 const trigger = (target, key) => {
     let depsMap = bucket.get(target) // 获取依赖
     if (!depsMap) return
     let effects = depsMap.get(key)
-    effects && effects.forEach(fn => fn())
+
+    const effectsToRun = new Set(effects)
+    effectsToRun.forEach(effectFn => effectFn())
+    // effects && effects.forEach(fn => fn())
 }
 
 const effect = (fn) => {
-    activeEffect = fn
-    fn()
+    const effectFn = () => {
+        cleanup(effectFn)
+        activeEffect = effectFn
+        fn()
+    }
+    effectFn.deps = []
+    effectFn()
+}
+
+const cleanup = (effectFn) => {
+    for (let i = 0; i < effectFn.deps.length; i++) {
+        const deps = effectFn.deps[i]
+        deps.delete(effectFn)
+
+    }
+    effectFn.deps.length = 0
 }
 
 
@@ -47,6 +65,4 @@ effect(function () {
 
 setTimeout(() => {
     obj.ok = false
-    debugger
-}, 5000)
-
+}, 1000)

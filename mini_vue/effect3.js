@@ -1,5 +1,15 @@
+/*
+ * @Author: 大蒙
+ * @Date: 2023-02-24 09:06:53
+ * @LastEditors: 大蒙
+ * @LastEditTime: 2023-02-24 09:15:15
+ * @FilePath: /study/mini_vue/effect3.js
+ * @Description: 
+ * 
+ * Copyright (c) 2023, All Rights Reserved. 
+ */
 const bucket = new WeakMap()
-const data = { ok: true, text: 'this is a demo' }
+const data = { foo: true, bar: true }
 let activeEffect = null
 const obj = new Proxy(data, {
     get(target, key) {
@@ -34,14 +44,12 @@ const trigger = (target, key) => {
     let effects = depsMap.get(key)
 
     const effectsToRun = new Set(effects)
-    console.log('effectsToRun', effectsToRun, bucket);
     effectsToRun.forEach(effectFn => effectFn())
     // effects && effects.forEach(fn => fn())
 }
 
 const effect = (fn) => {
     const effectFn = () => {
-        console.log(1111);
         cleanup(effectFn)
         activeEffect = effectFn
         fn()
@@ -59,13 +67,24 @@ const cleanup = (effectFn) => {
     effectFn.deps.length = 0
 }
 
+let temp1, temp2;
+// effect(function () {
+//     document.body.innerHTML = obj.ok ? obj.text : 'not'
+// })
+effect(function effectFn1() {
 
-effect(function () {
-    document.body.innerHTML = obj.ok ? obj.text : 'not'
+    console.log('effectFn1执行');
+
+    effect(function effectFn2() {
+        console.log('effectFn2执行');
+        tmp2 = obj.bar
+    })
+
+    temp1 = obj.foo
 })
 
 
 setTimeout(() => {
-    console.log('effectsToRun', bucket, activeEffect);
-    obj.ok = false
+    debugger
+    obj.foo = 34
 }, 1000)

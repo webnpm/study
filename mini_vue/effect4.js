@@ -2,7 +2,7 @@
  * @Author: 大蒙
  * @Date: 2023-02-24 09:06:53
  * @LastEditors: 大蒙
- * @LastEditTime: 2023-02-25 12:48:02
+ * @LastEditTime: 2023-02-26 21:13:06
  * @FilePath: /study/mini_vue/effect4.js
  * @Description: 
  * 
@@ -44,9 +44,14 @@ const trigger = (target, key) => {
     if (!depsMap) return
     let effects = depsMap.get(key)
 
-    const effectsToRun = new Set(effects)
+    const effectsToRun = new Set()
+
+    effects && effects.forEach(effectFn => {
+        if (effectFn != activeEffect) {
+            effectsToRun.add(effectFn)
+        }
+    })
     effectsToRun.forEach(effectFn => effectFn())
-    // effects && effects.forEach(fn => fn())
 }
 
 const effect = (fn) => {
@@ -71,6 +76,5 @@ const cleanup = (effectFn) => {
     effectFn.deps.length = 0
 }
 effect(() => {
-    debugger
     obj.foo++
 })

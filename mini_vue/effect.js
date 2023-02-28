@@ -1,3 +1,13 @@
+/*
+ * @Author: 大蒙
+ * @Date: 2023-02-20 08:14:06
+ * @LastEditors: 大蒙
+ * @LastEditTime: 2023-02-27 09:06:41
+ * @FilePath: /study/mini_vue/effect.js
+ * @Description: 
+ * 
+ * Copyright (c) 2023, All Rights Reserved. 
+ */
 const bucket = new WeakMap()
 const data = { ok: true, text: 'this is a demo' }
 let activeEffect = null
